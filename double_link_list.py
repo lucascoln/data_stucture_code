@@ -72,13 +72,19 @@ class DoubleLinkList(object):
         if pos == 0 :
             if pos is not False:
                 self.__head = cur.next
+                cur.next.pre = None
             else:
                 return False
         if pos:
             while count < pos - 1:
                 count += 1
                 cur = cur.next
-            cur.next = cur.next.next
+            if pos == self.length()-1:
+                cur.next = None
+                return
+            else:
+                cur.next = cur.next.next
+                cur.next.next.pre = cur
         else:
             return False
 
@@ -106,5 +112,5 @@ if __name__ == '__main__':
     ll.insert(4,24)
     print(ll.travel())
     print(ll.search(5))
-    ll.remove(6)
+    ll.remove(2)
     print(ll.travel())
