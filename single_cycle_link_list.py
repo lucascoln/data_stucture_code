@@ -4,9 +4,11 @@ class Node(object):
         self.elem = item
         self.next =None
 
-class SingleLinkList(object):
+class SingleCycleLinkList(object):
     def __init__(self, node=None):
         self.__head = node
+        if node:
+            node.next = node
 
     def is_empty(self):
         if self.__head == None:
@@ -16,23 +18,36 @@ class SingleLinkList(object):
 
 
     def length(self):
+        if self.is_empty():
+            return 0
         cur = self.__head
-        count = 0
-        while cur != None:
+        count = 1
+        while cur.next != self.__head:
             count += 1
             cur = cur.next
         return count
 
     def travel(self):
+        if self.is_empty():
+            return
         cur = self.__head
-        while cur != None:
+        while cur.next != self.__head:
             print(cur.elem,end=' ')
             cur = cur.next
+        print(cur.elem)
 
     def add(self,item):
-        New = Node(item)
-        New.next = self.__head
-        self.__head = New
+        node = Node(item)
+        if self.is_empty():
+            self.__head = node
+            node.next = node
+        else:
+            cur = self.__head
+            while cur.next != self.__head:
+                cur = cur.next
+            node.next = self.__head
+            self.__head = node
+            cur.next = self.__head
 
     def append(self,item):
         cur = self.__head
@@ -40,10 +55,10 @@ class SingleLinkList(object):
         if self.is_empty():
             self.__head = new
         else:
-            while cur.next is not None:
+            while cur.next is not self.__head:
                 cur = cur.next
             cur.next=new
-            new.next = None
+            new.next = self.__head
 
     def insert(self,pos,item):
         cur = self.__head
@@ -67,7 +82,11 @@ class SingleLinkList(object):
         count = 0
         if pos == 0 :
             if pos is not False:
-                self.__head = cur.next
+                if self.length()==1:
+                    self.__head = None
+                else:
+                    self.__head = cur.next
+                    cur.next.next=self.__head
             else:
                 return False
         if pos:
@@ -91,12 +110,23 @@ class SingleLinkList(object):
 
 
 if __name__ == '__main__':
-    ll = SingleLinkList()
+    ll = SingleCycleLinkList()
     print(ll.is_empty())
     print(ll.length())
-    ll.append(2)
+  #  ll.append(2)
     ll.add(23)
-    print(ll.length())
+    ll.remove(23 )
+    ll.travel()
+
+    ll.add(0)
+    ll.travel()
+
+    ll.append(3333)
+
+   # ll.remove(23)
+    ll.travel()
+    #print(ll.length())
+    '''
     ll.append(4)
     ll.insert(1,444)
     ll.insert(4,24)
@@ -104,3 +134,4 @@ if __name__ == '__main__':
     print(ll.search(5))
     ll.remove(6)
     print(ll.travel())
+    '''
