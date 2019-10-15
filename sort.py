@@ -31,7 +31,26 @@ def insert_sort(alist):
                 break
 
 
+def quick_sort(alist,first,last):
+    mid_value = alist[first]
+    low = first
+    high = last
+    if first >= last:
+        return
+    while low < high:
+        while low < high and alist[high] >= mid_value:
+            high -= 1
+        alist[low] = alist[high]
+        while low < high and alist[low] < mid_value:
+            low += 1
+        alist[high] = alist[low]
+    alist[low] = mid_value
+    quick_sort(alist, first, low-1)
+    quick_sort(alist, low+1, last)
+
+
+
 a =[55,32,3435,767,1,31]
-insert_sort(a)
+quick_sort(a,0,len(a)-1)
 print(a)
 
